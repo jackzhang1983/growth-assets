@@ -1,0 +1,43 @@
+name: Import high-resolution Fog Harbor images
+
+on:
+  push:
+    paths:
+      - ".github/import-highres-trigger.txt"
+
+permissions:
+  contents: write
+
+jobs:
+  import-images:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download original high-resolution PNG assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p SHB/fog-harbor/book-01/images
+          curl -fL "https://photoshop-api.adobe.io/v2/short-url/urn:aaid:ps:US:4c7277b9-116e-426c-be47-9022d0d12c61" -o SHB/fog-harbor/book-01/images/SHB_FHB1_A01_R1_PIN_V2.png
+          curl -fL "https://photoshop-api.adobe.io/v2/short-url/urn:aaid:ps:US:9962513c-0e08-4f39-8bf9-12e792634121" -o SHB/fog-harbor/book-01/images/SHB_FHB1_A02_R1_PIN_V2.png
+          curl -fL "https://photoshop-api.adobe.io/v2/short-url/urn:aaid:ps:US:5a53cab1-6a7f-4dde-aaec-ed7fbe3c4eab" -o SHB/fog-harbor/book-01/images/SHB_FHB1_A03_R1_PIN_V2.png
+          curl -fL "https://photoshop-api.adobe.io/v2/short-url/urn:aaid:ps:US:d7f89068-da85-421a-a2a3-8d8bb01f9fdb" -o SHB/fog-harbor/book-01/images/SHB_FHB1_A04_R1_PIN_V2.png
+          curl -fL "https://photoshop-api.adobe.io/v2/short-url/urn:aaid:ps:US:d7d16602-623c-4791-a3c5-705ed2426083" -o SHB/fog-harbor/book-01/images/SHB_FHB1_A05_R1_PIN_V2.png
+          curl -fL "https://photoshop-api.adobe.io/v2/short-url/urn:aaid:ps:US:d1ba4acb-ce3f-4ddb-bdc4-c4915d1944a1" -o SHB/fog-harbor/book-01/images/SHB_FHB1_A06_R1_PIN_V2.png
+          curl -fL "https://photoshop-api.adobe.io/v2/short-url/urn:aaid:ps:US:cff0db70-26c1-4b80-851b-26f0e6bb7b43" -o SHB/fog-harbor/book-01/images/SHB_FHB1_A07_R1_PIN_V2.png
+          curl -fL "https://photoshop-api.adobe.io/v2/short-url/urn:aaid:ps:US:71c6c09f-598e-4982-bfb7-6cb11c316ffc" -o SHB/fog-harbor/book-01/images/SHB_FHB1_A08_R1_PIN_V2.png
+          curl -fL "https://photoshop-api.adobe.io/v2/short-url/urn:aaid:ps:US:6ccb5aae-09d8-4b91-9e1e-6ace3085b0b0" -o SHB/fog-harbor/book-01/images/SHB_FHB1_A09_R1_PIN_V2.png
+          curl -fL "https://photoshop-api.adobe.io/v2/short-url/urn:aaid:ps:US:db330135-dbbb-49eb-91bd-7e94ea90ae0e" -o SHB/fog-harbor/book-01/images/SHB_FHB1_A10_R1_PIN_V2.png
+          curl -fL "https://photoshop-api.adobe.io/v2/short-url/urn:aaid:ps:US:5937ed60-ab73-424e-bc09-9d2e197de0b6" -o SHB/fog-harbor/book-01/images/SHB_FHB1_A11_R1_PIN_V2.png
+          curl -fL "https://photoshop-api.adobe.io/v2/short-url/urn:aaid:ps:US:1301b8dc-9e22-49e5-954d-a6f74a9984fa" -o SHB/fog-harbor/book-01/images/SHB_FHB1_A12_R1_PIN_V2.png
+          file SHB/fog-harbor/book-01/images/*.png
+          ls -lh SHB/fog-harbor/book-01/images/*.png
+      - name: Commit high-resolution assets
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add SHB/fog-harbor/book-01/images/*.png
+          git commit -m "Add high-resolution Fog Harbor Pin assets V2"
+          git push
